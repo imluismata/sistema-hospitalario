@@ -27,7 +27,7 @@ public class Enfermera extends Usuario {
     public void setTurno(String turno) {
         this.turno = turno;
     }
-    public void setArea(String area) {}
+    public void setArea(String area) { this.area = area; }
     //Este metodo es para especificar los permisos que tendra la enfermera  en el sistema
 
     @Override

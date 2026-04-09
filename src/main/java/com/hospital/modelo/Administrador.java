@@ -18,7 +18,9 @@ public class Administrador extends Usuario {
         return nivelAcceso;
     }
 
-    public void setNivelAcceso(String nivelAcceso) {}
+    public void setNivelAcceso(String nivelAcceso) {
+        this.nivelAcceso = nivelAcceso;
+    }
 
 //Este metodo es para especificar los permisos que tendra el administrador en el sistema
 

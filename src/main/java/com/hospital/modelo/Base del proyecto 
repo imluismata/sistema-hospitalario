@@ -1,0 +1,122 @@
+El proyecto consiste en el desarrollo de un Sistema de
+Gestión Hospitalaria como aplicación de escritorio en
+Java, que permitirá administrar el flujo completo de pacientes
+dentro de un hospital, integrando una base de datos
+relacional para garantizar la persistencia de la información.
+El sistema abarca desde el registro inicial del paciente en el
+área de emergencias, pasando por la evaluación médica y
+posible hospitalización, hasta su alta final con generación de
+factura.
+
+Se implementará utilizando Programación Orientada a
+Objetos (POO) y una arquitectura estructurada que separe la
+interfaz, la lógica y el acceso a datos.
+Objetivo del Sistema
+Desarrollar una aplicación que simule el funcionamiento
+básico de un hospital, permitiendo:
+·Gestionar pacientes en tiempo real
+·Validar condiciones médicas y disponibilidad de recursos
+·Administrar ingresos hospitalarios
+·Generar facturación automática
+·Mantener registro persistente en base de datos Arquitectura del Sistema
+
+
+El sistema estará basado en una estructura de tres capas:
+1. Presentación (Interfaz gráfica)
+·Desarrollada con JavaSwing.
+·Permite la interacción del usuario con el sistema mediante formularios y ventanas
+2. Lógica de negocio (Servicios)
+·Contiene las reglas del sistema
+·Valida condiciones como disponibilidad de
+habitaciones y especialidades médicas
+3. Acceso a datos (DAO + BD)
+·Manejo de la base de datos mediante JDBC (Java
+Database Connectivity)
+·Persistencia en MySQL
+
+
+Roles de Usuario
+El sistema contará con distintos tipos de usuarios:
+·Administrador: configuración del sistema, gestión
+de usuarios y reportes
+·Médico: diagnóstico, decisiones de ingreso o alta
+·Admisión: registro de pacientes e ingresos
+·Cajero: Realizar las facturas y cobrar.
+·Enfermería: control de camillas y estado del
+paciente
+
+
+Módulos del Sistema
+Módulo de Emergencias
+Primer punto de contacto del paciente.
+Funciones:
+Registro rápido del paciente
+Asignación de camillas disponibles
+Control de estado de camillas
+Módulo de Hospitalización
+
+Núcleo del sistema donde se toman decisiones críticas.
+Validaciones:
+Disponibilidad de habitaciones
+Existencia de la especialidad médica requerida
+Especialidades definidas:·
+Cardiología
+Pediatría
+Medicina Interna
+Cirugía General
+Traumatología
+
+
+Reglas:
+Sin habitación → no ingreso
+Sin especialidad → traslado externo
+Módulo de Facturación y Alta
+Cierre del proceso del paciente.
+
+Funciones:·
+Cálculo de costos (emergencia, hospitalización,
+procedimientos)
+Generación de factura
+Registro en base de datos
+
+
+Flujo General del Sistema
+1. Registro del paciente en emergencias
+2. Asignación de camilla
+3. Evaluación médica
+4. Validación de hospitalización
+5. Ingreso (si aplica)
+6. Registro de procedimientos
+7. Alta médica
+8. Generación de factura
+Base de Datos
+El sistema utilizará una base de datos relacional con tablas
+como:
+Pacientes
+Usuarios
+Medicos
+Camillas
+Evaluaciones
+Habitaciones
+Especialidades
+Ingresos
+Facturas
+Procedimientos
+
+
+Organización del Equipo (3 personas)
+El desarrollo se dividirá por responsabilidades técnicas:
+
+
+
+Luis Mata Miranda – Lógica del Sistema ESTA ES MI PARTE
+Implementación de servicios
+Validaciones de negocio
+Flujo del sistema
+
+
+Trabajo conjunto (todos)
+Integración de módulos
+Desarrollo del menú principal
+Pruebas del sistema
+Corrección de errores

@@ -17,7 +17,7 @@ public class Admision extends Usuario {
     public String getTurno() {
         return turno;
     }
-    public void setTurno(String turno) {}
+    public void setTurno(String turno) {this.turno = turno;}
 
 
 

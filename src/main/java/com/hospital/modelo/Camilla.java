@@ -12,6 +12,7 @@ public class Camilla {
         this.numero = numero;
         this.estado = estado;
         this.ubicacion = ubicacion;
+
     }
 
 
