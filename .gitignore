@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+### IntelliJ IDEA ###
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+=======
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -12,6 +18,7 @@ target/
 *.iws
 *.iml
 *.ipr
+>>>>>>> 2ed4ebf41b728177ea977f5cef4109962e346ef8
 
 ### Eclipse ###
 .apt_generated
@@ -21,6 +28,12 @@ target/
 .settings
 .springBeans
 .sts4-cache
+<<<<<<< HEAD
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+=======
+>>>>>>> 2ed4ebf41b728177ea977f5cef4109962e346ef8
 
 ### NetBeans ###
 /nbproject/private/
@@ -28,14 +41,20 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
+<<<<<<< HEAD
+=======
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+>>>>>>> 2ed4ebf41b728177ea977f5cef4109962e346ef8
 
 ### VS Code ###
 .vscode/
 
 ### Mac OS ###
+<<<<<<< HEAD
+.DS_Store
+=======
 .DS_Store
 
 # Credenciales - NUNCA subir a GitHub
@@ -47,3 +66,4 @@ db.properties
 # Carpeta idea completa
 .idea/
 
+>>>>>>> 2ed4ebf41b728177ea977f5cef4109962e346ef8
