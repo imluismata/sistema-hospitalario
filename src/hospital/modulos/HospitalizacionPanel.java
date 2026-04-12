@@ -17,7 +17,7 @@ public class HospitalizacionPanel extends JPanel {
 
         add(crearFilaTitulo(), BorderLayout.NORTH);
 
-        // borderlayout en el centro: estadisticas arriba, tarjetas llenando el resto
+        // borderlayout en el centro: estadisticas arriba
         JPanel centro = new JPanel(new BorderLayout(0, 15));
         centro.setBackground(Estilos.FONDO_APP);
         centro.setBorder(new EmptyBorder(15, 0, 0, 0));
@@ -40,7 +40,6 @@ public class HospitalizacionPanel extends JPanel {
     private JPanel crearFilaEstadisticas() {
         JPanel fila = new JPanel(new GridLayout(1, 4, 10, 0));
         fila.setBackground(Estilos.FONDO_APP);
-        // preferredsize fija la altura de las estadisticas sin limitar las tarjetas
         fila.setPreferredSize(new Dimension(0, 75));
         fila.add(crearStat("Pacientes ingresados",  "x", Estilos.TEXTO_NORMAL));
         fila.add(crearStat("Habitaciones Libres",   "x", Estilos.VERDE_TEXTO));
@@ -49,17 +48,16 @@ public class HospitalizacionPanel extends JPanel {
         return fila;
     }
 
-    // dos columnas en borderlayout center, se expanden para llenar el espacio
+    // dos columnas en borderlayout center
     private JPanel crearFilaPrincipal() {
         JPanel fila = new JPanel(new GridLayout(1, 2, 12, 0));
         fila.setBackground(Estilos.FONDO_APP);
-        // sin setMaximumSize para que crezca verticalmente con la ventana
         fila.add(crearTarjetaValidacion());
         fila.add(crearTarjetaMapa());
         return fila;
     }
 
-    // tarjeta validacion con contenido arriba y combo+boton anclados abajo
+    // tarjeta validacion 
     private JPanel crearTarjetaValidacion() {
         JPanel tarjeta = crearTarjeta("Validacion de Ingresos");
 
@@ -82,12 +80,14 @@ public class HospitalizacionPanel extends JPanel {
         panelSuperior.add(bannerPaciente);
         panelSuperior.add(Box.createVerticalStrut(12));
 
-        // habitacion disponible, separador, especialidad disponible
+        // habitacion disponible, 
         panelSuperior.add(crearFilaValidacion("Habitacion Disponible:",  "si/no", null));
         panelSuperior.add(new JSeparator());
+        
+        // especialidad disponible
         panelSuperior.add(crearFilaValidacion("Especialidad Disponible:", "si/no", null));
 
-        // panel inferior: combo y boton anclados al fondo con borderlayout south
+        // panel inferior: combo y boton 
         JPanel panelInferior = new JPanel();
         panelInferior.setLayout(new BoxLayout(panelInferior, BoxLayout.Y_AXIS));
         panelInferior.setBackground(Estilos.FONDO_BLANCO);
@@ -119,7 +119,7 @@ public class HospitalizacionPanel extends JPanel {
         btnConfirmarIngreso.setAlignmentX(Component.LEFT_ALIGNMENT);
         btnConfirmarIngreso.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnConfirmarIngreso.addActionListener(e -> {
-            // todo: registrar ingreso del paciente en la bd
+            // registrar ingreso del paciente en la bd
         });
 
         panelInferior.add(lblAsignar);
@@ -153,7 +153,7 @@ public class HospitalizacionPanel extends JPanel {
         return fila;
     }
 
-    // tarjeta mapa: grilla y leyenda quedan arriba, espacio blanco se expande abajo
+    // mapa de habitaciones
     private JPanel crearTarjetaMapa() {
         JPanel tarjeta = crearTarjeta("Mapa de Habitaciones");
 
@@ -164,20 +164,20 @@ public class HospitalizacionPanel extends JPanel {
             {"07","Cirugia General","libre"},   {"08","Pediatria",     "libre"}
         };
 
-        // grilla sin restricciones de tamaño, celdas conservan su tamaño natural
+        // grilla 
         JPanel grilla = new JPanel(new GridLayout(2, 4, 8, 8));
         grilla.setBackground(Estilos.FONDO_BLANCO);
         for (String[] hab : habitaciones) {
             grilla.add(crearCeldaHabitacion(hab[0], hab[1], hab[2].equals("libre")));
         }
 
-        // leyenda justo debajo de la grilla
+        // leyenda 
         JPanel leyenda = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         leyenda.setBackground(Estilos.FONDO_BLANCO);
         leyenda.add(crearItemLeyenda("Libre",   Estilos.VERDE_TEXTO));
         leyenda.add(crearItemLeyenda("Ocupado", Estilos.ROJO_TEXTO));
 
-        // panel que agrupa grilla y leyenda, va en NORTH para que no se estiren
+        // panel que agrupa grilla y leyenda
         JPanel panelGrillaYLeyenda = new JPanel();
         panelGrillaYLeyenda.setLayout(new BoxLayout(panelGrillaYLeyenda, BoxLayout.Y_AXIS));
         panelGrillaYLeyenda.setBackground(Estilos.FONDO_BLANCO);
@@ -186,12 +186,9 @@ public class HospitalizacionPanel extends JPanel {
         panelGrillaYLeyenda.add(Box.createVerticalStrut(10));
         panelGrillaYLeyenda.add(leyenda);
 
-        // panel vacio blanco que ocupa el espacio restante debajo de la leyenda
         JPanel panelRelleno = new JPanel();
         panelRelleno.setBackground(Estilos.FONDO_BLANCO);
 
-        // north: grilla + leyenda en su posicion natural
-        // center: espacio blanco que se expande sin mover nada arriba
         JPanel contenido = new JPanel(new BorderLayout());
         contenido.setBackground(Estilos.FONDO_BLANCO);
         contenido.add(panelGrillaYLeyenda, BorderLayout.NORTH);

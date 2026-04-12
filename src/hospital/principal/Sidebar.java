@@ -71,7 +71,7 @@ public class Sidebar extends JPanel {
         JPanel panelNav = new JPanel();
         panelNav.setLayout(new BoxLayout(panelNav, BoxLayout.Y_AXIS));
         panelNav.setBackground(Estilos.SIDEBAR_FONDO);
-        panelNav.setOpaque(true); // Importante: opaco para evitar filtrado
+        panelNav.setOpaque(true); //opaco para evitar filtrado
         panelNav.setBorder(new EmptyBorder(8, 0, 8, 0));
 
         // Crear cada item del menu con su pantalla y datos del usuario
