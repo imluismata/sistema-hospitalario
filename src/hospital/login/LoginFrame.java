@@ -26,7 +26,7 @@ public class LoginFrame extends JFrame {
     private void configurarVentana() {
         setTitle("LPA - Sistema Hospitalario");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(760, 490);
+        setSize(760, 500);
         setResizable(false);
         setLocationRelativeTo(null); // Centrar en pantalla
 
@@ -123,7 +123,7 @@ public class LoginFrame extends JFrame {
 
         // Escalar logo a un tamaño adecuado
         Image imagenEscalada = logoOriginal.getImage()
-                .getScaledInstance(260, 150, Image.SCALE_SMOOTH);
+                .getScaledInstance(300, 150, Image.SCALE_SMOOTH);
         ImageIcon logoEscalado = new ImageIcon(imagenEscalada);
 
         JLabel labelLogo = new JLabel(logoEscalado);
