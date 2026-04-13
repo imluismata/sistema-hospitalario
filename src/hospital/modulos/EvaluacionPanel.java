@@ -5,25 +5,28 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 
+// modulo de evaluacion medica
 public class EvaluacionPanel extends JPanel {
 
-    // Campos del lado izquierdo
-    private JTextField campoNombre;       // Solo lectura
-    private JTextField campoCedula;       // Solo lectura
-    private JTextField campoCamilla;      // Editable
-    private JTextField campoHoraLlegada;  // Editable
-    private JTextArea  campoMotivo;       // Editable
+    // campos del lado izquierdo
+    private JTextField campoNombre;
+    private JTextField campoCedula;
 
-    // Campos del lado derecho
+    // campos editables
+    private JTextField campoCamilla;
+    private JTextField campoHoraLlegada;
+    private JTextArea  campoMotivo;
+
+    // campos del lado derecho
     private JTextArea         campoDiagnostico;
     private JComboBox<String> comboEspecialidad;
     private JComboBox<String> comboDecision;
 
-    // Botones
+    // botones
     private JButton btnSiguientePaciente;
     private JButton btnConfirmarEvaluacion;
 
-    // Checkboxes de procedimientos
+    // checkboxes de procedimientos
     private JCheckBox chkElectrocardiograma;
     private JCheckBox chkOximetria;
     private JCheckBox chkAnalisisSangre;
@@ -51,8 +54,7 @@ public class EvaluacionPanel extends JPanel {
         add(scroll, BorderLayout.CENTER);
     }
 
-    //titulo
-
+    // titulo con boton siguiente paciente
     private JPanel crearFilaTitulo() {
         JPanel fila = new JPanel(new BorderLayout());
         fila.setBackground(Estilos.FONDO_APP);
@@ -63,7 +65,7 @@ public class EvaluacionPanel extends JPanel {
 
         btnSiguientePaciente = EmergenciasPanel.crearBotonOutline("Siguiente Paciente");
         btnSiguientePaciente.addActionListener(e -> {
-            //Cargar el proximo paciente en espera
+            // cargar el proximo paciente en espera de evaluacion
         });
 
         fila.add(titulo,               BorderLayout.WEST);
@@ -71,8 +73,7 @@ public class EvaluacionPanel extends JPanel {
         return fila;
     }
 
-    //fila superior
-
+    // fila superior con tarjeta de datos y tarjeta de evaluacion
     private JPanel crearFilaSuperior() {
         JPanel fila = new JPanel(new GridLayout(1, 2, 12, 0));
         fila.setBackground(Estilos.FONDO_APP);
@@ -82,81 +83,88 @@ public class EvaluacionPanel extends JPanel {
         fila.add(crearTarjetaEvaluacion());
         return fila;
     }
-
-    // datos del paciente
-
+//prueba git
+ // datos del paciente
     private JPanel crearTarjetaDatosPaciente() {
         JPanel tarjeta = crearTarjeta("Datos del Paciente");
 
-        // GridBagLayout garantiza que TODOS los campos tengan
-        // exactamente el mismo ancho, incluyendo el motivo de consulta
-        JPanel cuerpo = new JPanel(new GridBagLayout());
+        JPanel cuerpo = new JPanel();
+        cuerpo.setLayout(new BoxLayout(cuerpo, BoxLayout.Y_AXIS));
         cuerpo.setBackground(Estilos.FONDO_BLANCO);
         cuerpo.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx   = 0;
-        gbc.weightx = 1.0;                          // Ocupa todo el ancho
-        gbc.fill    = GridBagConstraints.HORIZONTAL; // Estira horizontalmente
-        gbc.insets  = new Insets(0, 0, 8, 0);       // Espacio entre campos
+        campoNombre      = new JTextField(); // solo lectura
+        campoCedula      = new JTextField(); // solo lectura
+        campoCamilla     = new JTextField(); // editable
+        campoHoraLlegada = new JTextField(); // editable
 
-        //nombre (solo lectura) 
-        campoNombre = crearCampoTexto(false);
-        gbc.gridy = 0;
-        cuerpo.add(crearPanelCampo("NOMBRE", campoNombre), gbc);
+        cuerpo.add(crearCampoSoloLectura("NOMBRE",          campoNombre,      false));
+        cuerpo.add(Box.createVerticalStrut(8));
+        cuerpo.add(crearCampoSoloLectura("CEDULA",          campoCedula,      false));
+        cuerpo.add(Box.createVerticalStrut(8));
+        cuerpo.add(crearCampoSoloLectura("CAMILLA",         campoCamilla,     true));
+        cuerpo.add(Box.createVerticalStrut(8));
+        cuerpo.add(crearCampoSoloLectura("HORA DE LLEGADA", campoHoraLlegada, true));
+        cuerpo.add(Box.createVerticalStrut(8));
 
-        // cedula (solo lectura)
-        campoCedula = crearCampoTexto(false);
-        gbc.gridy = 1;
-        cuerpo.add(crearPanelCampo("CEDULA", campoCedula), gbc);
-
-        // camilla (editable)
-        campoCamilla = crearCampoTexto(true);
-        gbc.gridy = 2;
-        cuerpo.add(crearPanelCampo("CAMILLA", campoCamilla), gbc);
-
-        // ── HORA DE LLEGADA (editable, formato 00:00)
-        campoHoraLlegada = crearCampoTexto(true);
-        campoHoraLlegada.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyTyped(java.awt.event.KeyEvent e) {
-                char c = e.getKeyChar();
-                String texto = campoHoraLlegada.getText();
-                // Solo permite digitos y los dos puntos, maximo 5 caracteres
-                if (!Character.isDigit(c) && c != ':') { e.consume(); return; }
-                if (texto.length() >= 5)               { e.consume(); return; }
-                //coloca dos puntos en la posicion 2
-                if (texto.length() == 2 && c != ':')
-                    campoHoraLlegada.setText(texto + ":");
-            }
-        });
-        gbc.gridy = 3;
-        cuerpo.add(crearPanelCampo("HORA DE LLEGADA", campoHoraLlegada), gbc);
-
-        // motivo de consulta(editable)
-        campoMotivo = new JTextArea(4, 0);
-        campoMotivo.setEditable(true);              // Editable
+        // area de texto para motivo de consulta (editable)
+        campoMotivo = new JTextArea(3, 0);
+        campoMotivo.setEditable(true);
         campoMotivo.setLineWrap(true);
         campoMotivo.setWrapStyleWord(true);
         campoMotivo.setBackground(Estilos.FONDO_CAMPO);
         campoMotivo.setFont(Estilos.NORMAL);
         campoMotivo.setBorder(new EmptyBorder(6, 8, 6, 8));
-
         JScrollPane scrollMotivo = new JScrollPane(campoMotivo);
-        scrollMotivo.setBorder(BorderFactory.createLineBorder(Estilos.BORDE, 1));
+        scrollMotivo.setBorder(BorderFactory.createLineBorder(Estilos.BORDE));
+        scrollMotivo.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        gbc.gridy   = 4;
-        gbc.weighty = 1.0;
-        gbc.fill    = GridBagConstraints.BOTH;
-        gbc.insets  = new Insets(0, 0, 0, 0);
-        cuerpo.add(crearPanelCampoArea("MOTIVO DE CONSULTA", scrollMotivo), gbc);
+        JPanel panelMotivo = new JPanel();
+        panelMotivo.setLayout(new BoxLayout(panelMotivo, BoxLayout.Y_AXIS));
+        panelMotivo.setBackground(Estilos.FONDO_BLANCO);
+        JLabel lblMotivo = new JLabel("MOTIVO DE CONSULTA");
+        lblMotivo.setFont(Estilos.ETIQUETA);
+        lblMotivo.setForeground(Estilos.TEXTO_GRIS);
+        lblMotivo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelMotivo.add(lblMotivo);
+        panelMotivo.add(Box.createVerticalStrut(4));
+        panelMotivo.add(scrollMotivo);
+        panelMotivo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 90));
+        panelMotivo.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        cuerpo.add(panelMotivo);
 
         tarjeta.add(cuerpo, BorderLayout.CENTER);
         return tarjeta;
     }
 
-    //evaluacion medica
+    // campo con etiqueta, fondo gris 
+    private JPanel crearCampoSoloLectura(String etiqueta, JTextField campo, boolean editable) {
+        campo.setEditable(editable);
+        campo.setBackground(Estilos.FONDO_CAMPO);
+        campo.setFont(Estilos.NORMAL);
+        campo.setBorder(new EmptyBorder(6, 8, 6, 8));
+        
 
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Estilos.FONDO_BLANCO);
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel lbl = new JLabel(etiqueta);
+        lbl.setFont(Estilos.ETIQUETA);
+        lbl.setForeground(Estilos.TEXTO_GRIS);
+        lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
+        campo.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        panel.add(lbl);
+        panel.add(Box.createVerticalStrut(4));
+        panel.add(campo);
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 58));
+        return panel;
+    }
+    // tarjeta de evaluacion medica
+    // incluye diagnostico, especialidad, decision y boton de confirmar
     private JPanel crearTarjetaEvaluacion() {
         JPanel tarjeta = crearTarjeta("Evaluacion");
 
@@ -165,6 +173,7 @@ public class EvaluacionPanel extends JPanel {
         cuerpo.setBackground(Estilos.FONDO_BLANCO);
         cuerpo.setBorder(new EmptyBorder(12, 14, 12, 14));
 
+        // area de texto para el diagnostico del medico
         JLabel lblDiag = new JLabel("DIAGNOSTICO");
         lblDiag.setFont(Estilos.ETIQUETA);
         lblDiag.setForeground(Estilos.TEXTO_GRIS);
@@ -176,6 +185,7 @@ public class EvaluacionPanel extends JPanel {
         campoDiagnostico.setBackground(Estilos.FONDO_CAMPO);
         campoDiagnostico.setFont(Estilos.NORMAL);
         campoDiagnostico.setBorder(new EmptyBorder(6, 8, 6, 8));
+
         JScrollPane scrollDiag = new JScrollPane(campoDiagnostico);
         scrollDiag.setBorder(BorderFactory.createLineBorder(Estilos.BORDE));
         scrollDiag.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -186,6 +196,7 @@ public class EvaluacionPanel extends JPanel {
         cuerpo.add(scrollDiag);
         cuerpo.add(Box.createVerticalStrut(10));
 
+        // combo de especialidad requerida
         String[] especialidades = {
             "Cardiologia", "Pediatría", "Medicina Interna",
             "Cirugía General", "Traumatología"
@@ -195,12 +206,14 @@ public class EvaluacionPanel extends JPanel {
         cuerpo.add(crearPanelCombo("ESPECIALIDAD REQUERIDA", comboEspecialidad));
         cuerpo.add(Box.createVerticalStrut(10));
 
+        // combo de decision medica
         String[] decisiones = {"Hospitalizar", "Alta médica", "Traslado externo"};
         comboDecision = new JComboBox<>(decisiones);
         comboDecision.setFont(Estilos.NORMAL);
         cuerpo.add(crearPanelCombo("DECISION", comboDecision));
         cuerpo.add(Box.createVerticalStrut(14));
 
+        // boton confirmar evaluacion a ancho completo
         btnConfirmarEvaluacion = new JButton("Confirmar Evaluacion");
         btnConfirmarEvaluacion.setFont(Estilos.SUBTITULO);
         btnConfirmarEvaluacion.setBackground(Estilos.FONDO_BLANCO);
@@ -211,7 +224,7 @@ public class EvaluacionPanel extends JPanel {
         btnConfirmarEvaluacion.setAlignmentX(Component.LEFT_ALIGNMENT);
         btnConfirmarEvaluacion.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnConfirmarEvaluacion.addActionListener(e -> {
-            // Guardar evaluacion y decidir flujo
+            // guardar evaluacion y decidir flujo segun decision seleccionada
         });
         cuerpo.add(btnConfirmarEvaluacion);
 
@@ -219,8 +232,7 @@ public class EvaluacionPanel extends JPanel {
         return tarjeta;
     }
 
-    //procedimientos
-
+    // tarjeta de procedimientos medicos aplicados
     private JPanel crearTarjetaProcedimientos() {
         JPanel tarjeta = crearTarjeta("Procedimientos aplicados");
 
@@ -250,65 +262,31 @@ public class EvaluacionPanel extends JPanel {
         return tarjeta;
     }
 
-    // utilidades
-
-    private JTextField crearCampoTexto(boolean editable) {
-        JTextField campo = new JTextField();
-        campo.setFont(Estilos.NORMAL);
+    // campo de texto con etiqueta, recibe si es editable o no
+    private JPanel crearCampoConEtiqueta(String etiqueta, JTextField campo, boolean editable) {
         campo.setEditable(editable);
-        campo.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(Estilos.BORDE, 1),
-            new EmptyBorder(5, 8, 5, 8)
-        ));
-        campo.setBackground(editable ? Estilos.FONDO_BLANCO : Estilos.FONDO_CAMPO);
-        return campo;
-    }
+        campo.setBackground(Estilos.FONDO_CAMPO);
+        campo.setFont(Estilos.NORMAL);
+        campo.setBorder(new EmptyBorder(6, 8, 6, 8));
+        campo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 34));
 
-    // Panel con etiqueta arriba y JTextField abajo (para campos de una linea).
-    private JPanel crearPanelCampo(String etiqueta, JTextField campo) {
-        JPanel panel = new JPanel(new GridBagLayout());
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Estilos.FONDO_BLANCO);
-
-        GridBagConstraints g = new GridBagConstraints();
-        g.gridx = 0; g.weightx = 1.0; g.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel lbl = new JLabel(etiqueta);
         lbl.setFont(Estilos.ETIQUETA);
         lbl.setForeground(Estilos.TEXTO_GRIS);
+        lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
+        campo.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        g.gridy = 0; g.insets = new Insets(0, 0, 3, 0);
-        panel.add(lbl, g);
-
-        g.gridy = 1; g.insets = new Insets(0, 0, 0, 0);
-        panel.add(campo, g);
-
+        panel.add(lbl);
+        panel.add(Box.createVerticalStrut(4));
+        panel.add(campo);
         return panel;
     }
 
-    // Panel con etiqueta arriba y area de texto (JScrollPane) abajo
-    private JPanel crearPanelCampoArea(String etiqueta, JScrollPane areaScroll) {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(Estilos.FONDO_BLANCO);
-
-        GridBagConstraints g = new GridBagConstraints();
-        g.gridx = 0; g.weightx = 1.0; g.fill = GridBagConstraints.HORIZONTAL;
-
-        JLabel lbl = new JLabel(etiqueta);
-        lbl.setFont(Estilos.ETIQUETA);
-        lbl.setForeground(Estilos.TEXTO_GRIS);
-
-        g.gridy = 0; g.insets = new Insets(0, 0, 3, 0);
-        panel.add(lbl, g);
-
-        g.gridy = 1; g.weighty = 1.0;
-        g.fill  = GridBagConstraints.BOTH;
-        g.insets = new Insets(0, 0, 0, 0);
-        panel.add(areaScroll, g);
-
-        return panel;
-    }
-
-    // Panel con etiqueta y combo box debajo.
+    // panel con etiqueta y combo box debajo
     private JPanel crearPanelCombo(String etiqueta, JComboBox<String> combo) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -329,7 +307,7 @@ public class EvaluacionPanel extends JPanel {
         return panel;
     }
 
-    // Checkbox estilizado
+    // checkbox estilizado con fuente del sistema
     private JCheckBox crearCheckBox(String texto) {
         JCheckBox check = new JCheckBox(texto);
         check.setFont(Estilos.NORMAL);
@@ -337,12 +315,12 @@ public class EvaluacionPanel extends JPanel {
         check.setForeground(Estilos.TEXTO_NORMAL);
         check.setBorder(new EmptyBorder(6, 0, 6, 0));
         check.addActionListener(e -> {
-            //Agregar/quitar procedimiento de cobros
+            // agregar o quitar procedimiento de la lista de cobros
         });
         return check;
     }
 
-    // Tarjeta blanca con titulo en la parte superior.
+    // tarjeta contenedor con titulo y borde
     private JPanel crearTarjeta(String titulo) {
         JPanel t = new JPanel(new BorderLayout());
         t.setBackground(Estilos.FONDO_BLANCO);
@@ -356,4 +334,3 @@ public class EvaluacionPanel extends JPanel {
         return t;
     }
 }
-
