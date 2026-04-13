@@ -20,6 +20,9 @@ public abstract class Usuario {
         this.rol = rol;
     }
 
+    protected Usuario() {
+    }
+
     //Metodo que  obliga a cada hijo a definir qué puede hacer en el sistema
     public abstract String getPermisos();
 

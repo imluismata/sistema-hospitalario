@@ -1,30 +1,31 @@
-package bd;
+package com.hospital.dao;
+
+import com.hospital.modelo.Paciente;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
-public class PacienteDAO {
+public class PacienteDAO implements IPacienteDAO {
 
     Conexion conexion = new Conexion();
 
-    // 🔹 INSERT
-    public void guardarPaciente(String nombre, String cedula, String contacto, int edad) {
-
+    @Override
+    public void insertar(Paciente objeto) {
         try {
             Connection conn = conexion.conectar();
-
             String sql = "INSERT INTO Pacientes (Nombre, Cedula, Contacto, Edad) VALUES (?, ?, ?, ?)";
-
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setString(1, nombre);
-            ps.setString(2, cedula);
-            ps.setString(3, contacto);
-            ps.setInt(4, edad);
+            // Usamos modelo Paciente para obtener los datos
+            ps.setString(1, objeto.getNombre());
+            ps.setString(2, objeto.getCedula());
+            ps.setString(3, objeto.getContacto());
+            ps.setInt(4, objeto.getEdad());
 
             ps.executeUpdate();
-
             System.out.println("Paciente guardado correctamente");
 
         } catch (Exception e) {
@@ -32,72 +33,145 @@ public class PacienteDAO {
         }
     }
 
-    // 🔹 SELECT
-    public void listarPacientes() {
-
+    @Override
+    public void actualizar(Paciente objeto) {
         try {
             Connection conn = conexion.conectar();
-
-            String sql = "SELECT * FROM Pacientes";
-
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                System.out.println(
-                        rs.getInt("ID") + " - " +
-                                rs.getString("Nombre") + " - " +
-                                rs.getString("Cedula") + " - " +
-                                rs.getString("Contacto") + " - " +
-                                rs.getInt("Edad")
-                );
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // 🔹 UPDATE
-    public void actualizarPaciente(int id, String nombre) {
-
-        try {
-            Connection conn = conexion.conectar();
-
-            String sql = "UPDATE Pacientes SET Nombre = ? WHERE ID = ?";
-
+            // Actualizamos todos los campos
+            String sql = "UPDATE Pacientes SET Nombre = ?, Cedula = ?, Contacto = ?, Edad = ? WHERE ID = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setString(1, nombre);
-            ps.setInt(2, id);
+            ps.setString(1, objeto.getNombre());
+            ps.setString(2, objeto.getCedula());
+            ps.setString(3, objeto.getContacto());
+            ps.setInt(4, objeto.getEdad());
+            ps.setInt(5, objeto.getIdUsuario());
 
             ps.executeUpdate();
-
-            System.out.println("Paciente actualizado");
+            System.out.println("Paciente actualizado correctamente");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // 🔹 DELETE
-    public void eliminarPaciente(int id) {
-
+    @Override
+    public void eliminar(int id) {
         try {
             Connection conn = conexion.conectar();
-
             String sql = "DELETE FROM Pacientes WHERE ID = ?";
-
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setInt(1, id);
-
             ps.executeUpdate();
-
             System.out.println("Paciente eliminado");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Paciente> obtenerTodos() {
+        List<Paciente> listaPacientes = new ArrayList<>();
+        try {
+            Connection conn = conexion.conectar();
+            String sql = "SELECT * FROM Pacientes";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                // En lugar de imprimir, creamos objetos Paciente y los llenamos
+                Paciente p = new Paciente();
+                p.setIdUsuario(rs.getInt("ID"));
+                p.setNombre(rs.getString("Nombre"));
+                p.setCedula(rs.getString("Cedula"));
+                p.setContacto(rs.getString("Contacto"));
+                p.setEdad(rs.getInt("Edad"));
+
+                listaPacientes.add(p);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listaPacientes;
+    }
+
+    @Override
+    public Paciente obtenerPorId(int id) {
+        Paciente paciente = null;
+        try {
+            Connection conn = conexion.conectar();
+            String sql = "SELECT * FROM Pacientes WHERE ID = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                paciente = new Paciente();
+                paciente.setIdUsuario(rs.getInt("ID"));
+                paciente.setNombre(rs.getString("Nombre"));
+                paciente.setCedula(rs.getString("Cedula"));
+                paciente.setContacto(rs.getString("Contacto"));
+                paciente.setEdad(rs.getInt("Edad"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return paciente;
+    }
+
+    @Override
+    public List<Paciente> buscarPorNombre(String nombre) {
+        List<Paciente> listaPacientes = new ArrayList<>();
+        try {
+            Connection conn = conexion.conectar();
+            // Usamos LIKE para coincidencias parciales (ej. buscar "Juan" trae "Juan Perez")
+            String sql = "SELECT * FROM Pacientes WHERE Nombre LIKE ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, "%" + nombre + "%");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Paciente p = new Paciente();
+                p.setIdUsuario(rs.getInt("ID"));
+                p.setNombre(rs.getString("Nombre"));
+                p.setCedula(rs.getString("Cedula"));
+                p.setContacto(rs.getString("Contacto"));
+                p.setEdad(rs.getInt("Edad"));
+
+                listaPacientes.add(p);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listaPacientes;
+    }
+
+    @Override
+    public Paciente buscarPorUsername(String username) {
+        Paciente paciente = null;
+        try {
+            Connection conn = conexion.conectar();
+            // Nota: Asumo que tienes una columna 'Username' en la base de datos.
+            // Si no la tienes, esto dará error en ejecución y tendrás que agregarla a la tabla.
+            String sql = "SELECT * FROM Pacientes WHERE Username = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                paciente = new Paciente();
+                paciente.setIdUsuario(rs.getInt("ID"));
+                paciente.setNombre(rs.getString("Nombre"));
+                paciente.setCedula(rs.getString("Cedula"));
+                paciente.setContacto(rs.getString("Contacto"));
+                paciente.setEdad(rs.getInt("Edad"));
+                // paciente.setUsername(rs.getString("Username")); // Descomenta si el modelo lo tiene
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return paciente;
     }
 }

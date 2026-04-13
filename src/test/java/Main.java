@@ -1,5 +1,3 @@
-package com.hospital;
-
 import com.hospital.modelo.Paciente;
 import com.hospital.modelo.Usuario;
 import com.hospital.servicio.IUsuarioServicio;
