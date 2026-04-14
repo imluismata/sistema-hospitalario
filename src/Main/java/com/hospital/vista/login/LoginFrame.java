@@ -1,7 +1,7 @@
-package hospital.login;
-import hospital.estilos.Estilos;
-import hospital.principal.VentanaPrincipal;
+package com.hospital.vista.login;
+import com.hospital.vista.estilos.Estilos;
 
+import com.hospital.vista.principal.VentanaPrincipal;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;

@@ -1,6 +1,6 @@
-package hospital.principal;
+package com.hospital.vista.principal;
 
-import hospital.estilos.Estilos;
+import com.hospital.vista.estilos.Estilos;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

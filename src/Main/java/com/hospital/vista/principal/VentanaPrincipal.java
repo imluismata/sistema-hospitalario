@@ -1,15 +1,15 @@
-package hospital.principal;
+package com.hospital.vista.principal;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 
-import hospital.modulos.AdminPanel;
-import hospital.modulos.CajeraPanel;
-import hospital.modulos.EmergenciasPanel;
-import hospital.modulos.EvaluacionPanel;
-import hospital.modulos.FacturacionPanel;
-import hospital.modulos.HospitalizacionPanel;
+import com.hospital.vista.modulos.AdminPanel;
+import com.hospital.vista.modulos.CajeraPanel;
+import com.hospital.vista.modulos.EmergenciasPanel;
+import com.hospital.vista.modulos.EvaluacionPanel;
+import com.hospital.vista.modulos.FacturacionPanel;
+import com.hospital.vista.modulos.HospitalizacionPanel;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;

@@ -7,6 +7,9 @@ public class Administrador extends Usuario {
 
 
     private String nivelAcceso;
+
+    public Administrador() {}
+
     //Este es el constructor donde llamamos a los atributos del padre
     public Administrador(int idUsuario, String nombre, String username, String password, String rol, String nivelAcceso)
     {

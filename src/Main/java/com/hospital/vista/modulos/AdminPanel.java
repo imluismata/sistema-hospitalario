@@ -1,6 +1,9 @@
-package hospital.modulos;
-import hospital.estilos.Estilos;
-
+package com.hospital.vista.modulos;
+import com.hospital.modelo.*;
+import com.hospital.servicio.IUsuarioServicio;
+import com.hospital.servicio.UsuarioServicioImpl;
+import com.hospital.vista.estilos.Estilos;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
@@ -11,6 +14,8 @@ public class AdminPanel extends JPanel {
     // Tabla de usuarios del sistema
     private JTable          tablaUsuarios;
     private DefaultTableModel modeloUsuarios;
+    // Agrega esta línea junto a las demás variables de la clase
+    private IUsuarioServicio servicio = new UsuarioServicioImpl();
 
     // Botones
     private JButton btnNuevoUsuario;
@@ -45,13 +50,13 @@ public class AdminPanel extends JPanel {
         titulo.setFont(Estilos.TITULO);
         titulo.setForeground(Estilos.TEXTO_NORMAL);
 
-        btnNuevoUsuario = EmergenciasPanel.crearBotonOutline("+ Nuevo Usuario");
-        btnNuevoUsuario.addActionListener(e -> {
+     //   btnNuevoUsuario = EmergenciasPanel.crearBotonOutline("+ Nuevo Usuario");
+      //  btnNuevoUsuario.addActionListener(e -> {
             //Abrir dialogo para crear nuevo usuario con su rol
-        });
+       // });
 
         fila.add(titulo,          BorderLayout.WEST);
-        fila.add(btnNuevoUsuario, BorderLayout.EAST);
+       // fila.add(btnNuevoUsuario, BorderLayout.EAST);
         return fila;
     }
 
@@ -97,8 +102,38 @@ public class AdminPanel extends JPanel {
         btnAnadir = EmergenciasPanel.crearBotonOutline("+ Añadir");
         btnAnadir.setFont(Estilos.ETIQUETA);
         btnAnadir.addActionListener(e -> {
-            //Abrir formulario para añadir nuevo usuario
+            String nombre = JOptionPane.showInputDialog("Nombre del nuevo empleado:");
+            String rol = JOptionPane.showInputDialog("Rol (Ej: Medico, Cajero, Enfermera):");
+
+            if (nombre != null && rol != null && !nombre.trim().isEmpty()) {
+
+                // 1. Declaramos la variable padre (vacia por ahora)
+                Usuario nuevoEmpleado = null;
+
+                // 2. Evaluamos qué rol escribieron y creamos el HIJO correspondiente
+                String rolLimpio = rol.toLowerCase();
+
+                if (rolLimpio.contains("medico") || rolLimpio.contains("médico")) {
+                    nuevoEmpleado = new Medico();
+                } else if (rolLimpio.contains("enfermer@")) {
+                    nuevoEmpleado = new Enfermera();
+                } else if (rolLimpio.contains("cajer@")) {
+                    nuevoEmpleado = new Cajero();
+                } else {
+                    nuevoEmpleado = new Administrador(); // Por defecto si escribe otra cosa
+                }
+
+                // 3. Le ponemos el nombre (todos los hijos heredan este método del padre)
+                nuevoEmpleado.setNombre(nombre);
+
+                // 4. Tu lógica entra en acción (¡El servicio acepta cualquier hijo!)
+                servicio.crearUsuario(nuevoEmpleado);
+
+                // 5. Actualizamos la tabla
+                actualizarTablaVisual();
+            }
         });
+
 
         encabezado.add(lblTitulo, BorderLayout.WEST);
         encabezado.add(btnAnadir, BorderLayout.EAST);
@@ -237,5 +272,28 @@ public class AdminPanel extends JPanel {
         p.add(e); p.add(Box.createVerticalStrut(4)); p.add(v);
         return p;
     }
+
+// Método para que la tabla lea de tu UsuarioServicioImpl
+// Método para que la tabla lea de tu UsuarioServicioImpl
+private void actualizarTablaVisual() {
+    // 1. Limpiamos las filas viejas o de mentira
+    modeloUsuarios.setRowCount(0);
+
+    // 2. Le pedimos a tu servicio la lista real que está en la RAM
+    List<Usuario> empleados = servicio.obtenerTodosLosUsuarios();
+
+    // 3. Llenamos la tabla fila por fila
+    for (Usuario emp : empleados) {
+
+        // EL TRUCO MAGICO: Le pedimos a Java el nombre exacto de la clase hija
+        String rolReal = emp.getClass().getSimpleName();
+
+        modeloUsuarios.addRow(new Object[]{
+                emp.getNombre(),
+                rolReal,   // ¡Aquí metemos la variable mágica!
+                "Activo"
+        });
+    }
+}
 
 }

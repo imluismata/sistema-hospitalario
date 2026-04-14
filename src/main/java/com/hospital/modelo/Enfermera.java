@@ -9,6 +9,9 @@ public class Enfermera extends Usuario {
     private String area;
     //Este es el constructor donde llamamos a los atributos del padre
 
+    //constructor vacio
+    public Enfermera() {}
+
     public Enfermera(int idUsuario, String nombre, String username, String password, String rol)
     {
         super(idUsuario, nombre, username, password, rol);

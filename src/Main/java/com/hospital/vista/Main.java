@@ -1,12 +1,16 @@
-package hospitalmain;
+package com.hospital.vista;
 
-import hospital.login.LoginFrame;
+import com.hospital.vista.login.LoginFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 public class Main {
 
     public static void main(String[] args) {
+
+		// Prueba rápida de base de datos
+		com.hospital.dao.Conexion testConexion = new com.hospital.dao.Conexion();
+		testConexion.conectar();
     	try {
 
     		for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {

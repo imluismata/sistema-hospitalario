@@ -1,5 +1,6 @@
-package hospital.modulos;
-import hospital.estilos.Estilos;
+package com.hospital.vista.modulos;
+import com.hospital.modelo.Paciente;
+import com.hospital.vista.estilos.Estilos;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -29,6 +30,8 @@ public class EvaluacionPanel extends JPanel {
     private JCheckBox chkAnalisisSangre;
     private JCheckBox chkRadiografia;
     private JCheckBox chkSueroIV;
+    // Nuestro motor de base de datos para el doctor
+    private com.hospital.dao.EvaluacionDAOImpl evaluacionDAO = new com.hospital.dao.EvaluacionDAOImpl();
 
     public EvaluacionPanel() {
         setLayout(new BorderLayout());
@@ -63,7 +66,18 @@ public class EvaluacionPanel extends JPanel {
 
         btnSiguientePaciente = EmergenciasPanel.crearBotonOutline("Siguiente Paciente");
         btnSiguientePaciente.addActionListener(e -> {
-            //Cargar el proximo paciente en espera
+            // 1. Vamos a MySQL a buscar al paciente
+            Paciente p = evaluacionDAO.obtenerSiguientePaciente();
+
+            if (p != null) {
+                // 2. Lo ponemos en pantalla
+                campoNombre.setText(p.getNombre());
+                campoCedula.setText(p.getCedula());
+                campoMotivo.setText("Motivo en registro central...");
+                JOptionPane.showMessageDialog(this, "Paciente " + p.getNombre() + " listo para evaluación.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Excelente trabajo Doc. No hay pacientes en espera.", "Sala Vacía", JOptionPane.INFORMATION_MESSAGE);
+            }
         });
 
         fila.add(titulo,               BorderLayout.WEST);
@@ -201,6 +215,7 @@ public class EvaluacionPanel extends JPanel {
         cuerpo.add(crearPanelCombo("DECISION", comboDecision));
         cuerpo.add(Box.createVerticalStrut(14));
 
+        // 1. ¡PRIMERO CREAMOS EL BOTÓN EN MEMORIA! (Esto es lo que se había borrado)
         btnConfirmarEvaluacion = new JButton("Confirmar Evaluacion");
         btnConfirmarEvaluacion.setFont(Estilos.SUBTITULO);
         btnConfirmarEvaluacion.setBackground(Estilos.FONDO_BLANCO);
@@ -210,14 +225,64 @@ public class EvaluacionPanel extends JPanel {
         btnConfirmarEvaluacion.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         btnConfirmarEvaluacion.setAlignmentX(Component.LEFT_ALIGNMENT);
         btnConfirmarEvaluacion.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // 2. AHORA SÍ, LE DAMOS LA ACCIÓN MÁGICA DE MYSQL
         btnConfirmarEvaluacion.addActionListener(e -> {
-            // Guardar evaluacion y decidir flujo
+            String cedula = campoCedula.getText();
+
+            // Validamos que haya un paciente cargado
+            if (cedula.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Primero llame al siguiente paciente.", "Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            String diag = campoDiagnostico.getText();
+
+            // --- TRUCO SENIOR: RECOLECTAR PROCEDIMIENTOS ---
+            String procedimientos = "";
+            if (chkElectrocardiograma.isSelected()) procedimientos += "- Electrocardiograma\n";
+            if (chkOximetria.isSelected())          procedimientos += "- Oximetría de pulso\n";
+            if (chkAnalisisSangre.isSelected())     procedimientos += "- Análisis de Sangre\n";
+            if (chkRadiografia.isSelected())        procedimientos += "- Radiografía de Tórax\n";
+            if (chkSueroIV.isSelected())            procedimientos += "- Suero Intravenoso\n";
+
+            // Si marcó al menos uno, lo pegamos al final del diagnóstico
+            if (!procedimientos.isEmpty()) {
+                diag = diag + "\n\nProcedimientos Aplicados:\n" + procedimientos;
+            }
+            // -----------------------------------------------
+
+            String esp = (String) comboEspecialidad.getSelectedItem();
+            String dec = (String) comboDecision.getSelectedItem();
+
+            // Guardamos el reporte médico (ahora incluye los procedimientos)
+            evaluacionDAO.guardarEvaluacion(cedula, diag, esp, dec);
+
+            // Cambiamos su estado si se va de alta
+            evaluacionDAO.procesarDecision(cedula, dec, campoCamilla.getText());
+
+            JOptionPane.showMessageDialog(this, "Evaluación médica guardada en el sistema.");
+
+            // Limpiamos la pantalla para el siguiente
+            // Limpiamos la pantalla para el siguiente
+            campoNombre.setText("");
+            campoCedula.setText("");
+            campoDiagnostico.setText("");
+            comboDecision.setSelectedIndex(0);
+
+            chkElectrocardiograma.setSelected(false);
+            chkOximetria.setSelected(false);
+            chkAnalisisSangre.setSelected(false);
+            chkRadiografia.setSelected(false);
+            chkSueroIV.setSelected(false);
         });
+
+        // 3. Y FINALMENTE LO PEGAMOS A LA PANTALLA
         cuerpo.add(btnConfirmarEvaluacion);
 
         tarjeta.add(cuerpo, BorderLayout.CENTER);
         return tarjeta;
-    }
+    } // <- Esta es la llave que cierra el método crearTarjetaEvaluacion()
 
     //procedimientos
 

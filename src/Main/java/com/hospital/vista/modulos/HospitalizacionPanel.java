@@ -1,5 +1,5 @@
-package hospital.modulos;
-import hospital.estilos.Estilos;
+package com.hospital.vista.modulos;
+import com.hospital.vista.estilos.Estilos;
 
 import javax.swing.*;
 import javax.swing.border.*;

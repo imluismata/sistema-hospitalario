@@ -7,6 +7,9 @@ public class Cajero extends Usuario {
     // Atributo propio del cajero
     private String turno; // turno en el que trabaja (mañana, tarde, noche)
 
+    //constructor vacio
+    public Cajero() {}
+
     // Constructor que inicializa los atributos del padre y el turno del cajero
     public Cajero(int idUsuario, String nombre, String username, String password, String rol, String turno) {
         super(idUsuario, nombre, username, password, rol);

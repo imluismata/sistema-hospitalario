@@ -1,4 +1,4 @@
-package hospital.estilos;
+package com.hospital.vista.estilos;
 
 import java.awt.Color;
 import java.awt.Font;
