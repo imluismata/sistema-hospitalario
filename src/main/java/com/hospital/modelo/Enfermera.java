@@ -1,13 +1,16 @@
 package com.hospital.modelo;
 
-
-//Esta clase hereda de la clase usuario, el cual hereda todos sus atributos
-// y métodos, como idUsuario, nombre, username, password y rol.
+// POO: Herencia - Enfermera extiende Usuario.
 public class Enfermera extends Usuario {
 
+    // POO: Encapsulacion - estado propio protegido por getters/setters.
     private String turno;
     private String area;
+
     //Este es el constructor donde llamamos a los atributos del padre
+
+    //constructor vacio
+    public Enfermera() {}
 
     public Enfermera(int idUsuario, String nombre, String username, String password, String rol)
     {
@@ -28,8 +31,7 @@ public class Enfermera extends Usuario {
         this.turno = turno;
     }
     public void setArea(String area) {}
-    //Este metodo es para especificar los permisos que tendra la enfermera  en el sistema
-
+    // POO: Polimorfismo - permisos especificos de enfermeria.
     @Override
     public String getPermisos() {
         return "control de camillas y estado del paciente";

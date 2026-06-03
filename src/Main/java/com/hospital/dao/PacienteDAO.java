@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+// POO: Polimorfismo - implementa el contrato IPacienteDAO.
 public class PacienteDAO implements IPacienteDAO {
 
     Conexion conexion = new Conexion();
@@ -126,7 +127,7 @@ public class PacienteDAO implements IPacienteDAO {
         List<Paciente> listaPacientes = new ArrayList<>();
         try {
             Connection conn = conexion.conectar();
-            // Usamos LIKE para coincidencias parciales (ej. buscar "Juan" trae "Juan Perez")
+            //  LIKE para coincidencias parciales
             String sql = "SELECT * FROM Pacientes WHERE Nombre LIKE ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, "%" + nombre + "%");
@@ -153,8 +154,6 @@ public class PacienteDAO implements IPacienteDAO {
         Paciente paciente = null;
         try {
             Connection conn = conexion.conectar();
-            // Nota: Asumo que tienes una columna 'Username' en la base de datos.
-            // Si no la tienes, esto dará error en ejecución y tendrás que agregarla a la tabla.
             String sql = "SELECT * FROM Pacientes WHERE Username = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);
@@ -167,7 +166,6 @@ public class PacienteDAO implements IPacienteDAO {
                 paciente.setCedula(rs.getString("Cedula"));
                 paciente.setContacto(rs.getString("Contacto"));
                 paciente.setEdad(rs.getInt("Edad"));
-                // paciente.setUsername(rs.getString("Username")); // Descomenta si el modelo lo tiene
             }
         } catch (Exception e) {
             e.printStackTrace();

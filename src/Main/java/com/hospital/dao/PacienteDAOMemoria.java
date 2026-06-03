@@ -1,4 +1,5 @@
-import com.hospital.dao.IPacienteDAO;
+package com.hospital.dao;
+
 import com.hospital.modelo.Paciente;
 import java.util.ArrayList;
 import java.util.List;

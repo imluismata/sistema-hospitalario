@@ -1,11 +1,11 @@
 package com.hospital.modelo;
 
-
-//Esta clase hereda de la clase usuario, el cual hereda todos sus atributos
-// y métodos, como idUsuario, nombre, username, password y rol.
+// POO: Herencia - Admision extiende Usuario.
 public class Admision extends Usuario {
 
+    // POO: Encapsulacion - atributo propio del personal de admision.
     private String turno;
+
     //Este es el constructor donde llamamos a los atributos del padre
 
     public Admision(int idUsuario, String nombre, String username, String password, String rol, String turno)
@@ -19,10 +19,7 @@ public class Admision extends Usuario {
     }
     public void setTurno(String turno) {}
 
-
-
-    //Este metodo es para especificar los permisos que tendra el personal de admision  en el sistema
-
+    // POO: Polimorfismo - permisos especificos de admision.
     @Override
     public String getPermisos() {
         return "registro de pacientes e ingresos";
