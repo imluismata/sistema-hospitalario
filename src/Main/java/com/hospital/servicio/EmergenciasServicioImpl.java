@@ -5,9 +5,10 @@ import com.hospital.modelo.Paciente;
 import java.util.ArrayList;
 import java.util.List;
 
+// POO: Polimorfismo - implementa IEmergenciasServicio.
 public class EmergenciasServicioImpl implements IEmergenciasServicio {
 
-    // ¡Adiós RAM! Hola MySQL
+    // POO: Encapsulacion - el DAO se oculta dentro del servicio.
     private PacienteDAOImpl pacienteDAO = new PacienteDAOImpl();
 
     @Override
@@ -30,7 +31,6 @@ public class EmergenciasServicioImpl implements IEmergenciasServicio {
 
     @Override
     public List<Paciente> obtenerPacientesEnEspera() {
-        // Lo programaremos luego para llenar la tabla de la sala de espera
         return new ArrayList<>();
     }
 

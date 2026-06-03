@@ -4,6 +4,7 @@ import com.hospital.modelo.Paciente;
 
 import java.util.List;
 
+// POO: Abstraccion - contrato para operaciones de pacientes.
 public interface IPacienteDAO {
     void insertar(Paciente objeto);
 

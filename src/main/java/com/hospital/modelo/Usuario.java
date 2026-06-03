@@ -1,9 +1,10 @@
 package com.hospital.modelo;
 
-// Clase abstracta base para todos los tipos de usuarios del sistema
+// POO: Abstraccion - define una base comun para todos los usuarios.
 public abstract class Usuario {
 
 
+    // POO: Encapsulacion - atributos privados accesibles solo via getters/setters.
     // Atributos privados
     private int idUsuario;
     private String nombre;
@@ -19,11 +20,12 @@ public abstract class Usuario {
         this.password = password;
         this.rol = rol;
     }
-
+    // este metodo se utiliza para cuando se necesite crear un usuario
+    // sin especificar sus atributos, por ejemplo, al momento de iniciar sesión
     protected Usuario() {
     }
 
-    //Metodo que  obliga a cada hijo a definir qué puede hacer en el sistema
+    // POO: Abstraccion - contrato que cada subclase debe implementar.
     public abstract String getPermisos();
 
 

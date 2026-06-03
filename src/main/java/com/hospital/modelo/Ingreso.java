@@ -5,6 +5,7 @@ import java.util.Date;
 // Clase que representa un ingreso hospitalario de un paciente
 public class Ingreso {
 
+    // POO: Encapsulacion - atributos privados del ingreso hospitalario.
     // Atributos privados del ingreso
     private int idIngreso;
     private Date fecha;

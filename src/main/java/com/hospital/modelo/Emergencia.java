@@ -5,6 +5,7 @@ import java.util.Date;
 
 
 public class Emergencia {
+    // POO: Encapsulacion - atributos privados del registro de emergencia.
     private int idEmergencia;
     private Date fechaIngreso;
     private Date fechaSalida;

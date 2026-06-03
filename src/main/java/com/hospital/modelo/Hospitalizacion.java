@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Hospitalizacion {
 
+    // POO: Encapsulacion - datos de hospitalizacion con acceso controlado.
     private int idHospitalizacion;
     private Date fechaIngreso;
     private Date fechaSalida;

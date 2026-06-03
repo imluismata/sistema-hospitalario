@@ -1,13 +1,15 @@
 package com.hospital.modelo;
 
-// Esta clase es hija de la clase Usuario, representa a un paciente en el sistema del hospital.
-// Hereda los atributos y métodos de la clase Usuario, como idUsuario, nombre, username, password y rol.
+// POO: Herencia - Paciente extiende Usuario.
 public class Paciente extends Usuario {
 
 
+    // POO: Encapsulacion - datos propios del paciente con acceso controlado.
     private String cedula;
     private String contacto;
     private int edad;
+    private String seguro;
+    private String nss;
 
     // Este es el constructor donde llamamos a los atributos del padre
     public Paciente(int idUsuario, String nombre, String username, String password, String rol) {
@@ -18,7 +20,7 @@ public class Paciente extends Usuario {
     public Paciente() {
     }
 
-    // Este metodo es para especificar los permisos que tendra el paciente en el sistema
+    // POO: Polimorfismo - permisos especificos del paciente.
     @Override
     public String getPermisos() {
         return "";
@@ -49,4 +51,10 @@ public class Paciente extends Usuario {
     public void setEdad(int edad) {
         this.edad = edad;
     }
+
+    // Getters y Setters
+    public String getSeguro() { return seguro; }
+    public void setSeguro(String seguro) { this.seguro = seguro; }
+    public String getNss() { return nss; }
+    public void setNss(String nss) { this.nss = nss; }
 }

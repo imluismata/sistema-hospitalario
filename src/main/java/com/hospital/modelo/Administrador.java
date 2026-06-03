@@ -1,8 +1,6 @@
 package com.hospital.modelo;
 
-
-//Esta clase hereda de la clase usuario, el cual hereda todos sus atributos
-// y métodos, como idUsuario, nombre, username, password y rol.
+// POO: Herencia - Administrador extiende Usuario para reutilizar atributos y comportamiento.
 public class Administrador extends Usuario {
 
 
@@ -23,8 +21,7 @@ public class Administrador extends Usuario {
 
     public void setNivelAcceso(String nivelAcceso) {}
 
-//Este metodo es para especificar los permisos que tendra el administrador en el sistema
-
+    // POO: Polimorfismo - redefine permisos segun el rol.
     @Override
     public String getPermisos() {
         return "Gestionar usuarios, configurar sistema, generar reportes";
