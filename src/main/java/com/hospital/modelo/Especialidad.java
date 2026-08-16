@@ -2,6 +2,7 @@ package com.hospital.modelo;
 
 public class Especialidad {
 
+    // POO: Encapsulacion - datos de especialidad ocultos tras getters/setters.
     private int idEspecialidad;
     private String nombre;
     private String descripcion;

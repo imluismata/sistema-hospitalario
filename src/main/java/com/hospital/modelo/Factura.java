@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Factura {
 
+    // POO: Encapsulacion - datos de la factura protegidos por getters/setters.
     private int idFactura;
     private Date fecha;
     private double montoTotal;

@@ -1,6 +1,7 @@
 package com.hospital.modelo;
 
 public class Habitacion {
+    // POO: Encapsulacion - estado de la habitacion accesible via getters/setters.
     private int idHabitacion;
     private String numero;
     private String tipo;
@@ -45,4 +46,3 @@ public class Habitacion {
         this.numero = numero;
     }
 }
-

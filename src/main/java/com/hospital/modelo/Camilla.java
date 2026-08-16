@@ -2,6 +2,7 @@ package com.hospital.modelo;
 
 public class Camilla {
 
+    // POO: Encapsulacion - atributos privados con acceso controlado.
     private int idCamilla;
     private String numero;
     private String estado;

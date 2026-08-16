@@ -2,6 +2,7 @@ package com.hospital.modelo;
 
 public class Procedimiento {
 
+    // POO: Encapsulacion - datos del procedimiento protegidos por getters/setters.
     private int idProcedimiento;
     private String nombre;
     private double costo;
